@@ -319,7 +319,7 @@ Já existe um teste implementado, o `ShouldAddVideoToChannel`. Entenda como ele 
 ## 4 - Teste a listagem de vídeo
 
 <details>
-  <summary> Complete a função <code>ShouldReturnAVideoLis</code> para testar seu endpoint </summary>
+  <summary> Complete a função <code>ShouldReturnAVideoList</code> para testar seu endpoint </summary>
   <br />
 
 A função se encontra no arquivo `src/video-portal.Test/VideoPortalTest.cs`.
