@@ -12,7 +12,7 @@ namespace video_portal.Models
 
     public string Url { get; set;  }
 
-    public Video Videos;
+    public ICollection<Video> Videos;
     public ICollection<User> Owers;
 };
 }

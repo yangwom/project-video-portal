@@ -9,12 +9,11 @@ namespace video_portal.Models
 
         public string CommentText { get; set; }
 
-        [ForeignKey("UserId")]
-        public string UserId;
+        public User User;
+        public int UserId { get; set; }
 
-        [ForeignKey("VideoId")]
-
-        public int VideoId;
+        public Video Video;
+        public int VideoId { get; set; }
 
     };
 }

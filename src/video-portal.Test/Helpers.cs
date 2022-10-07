@@ -28,7 +28,7 @@ namespace video_portal.Test
 
         public static List<Comment> GetCommentListForTests() =>
             new() {
-                new Comment{
+                new Comment {
                     CommentId = 1,
                     CommentText = "Comment 1",
                     VideoId = 1,

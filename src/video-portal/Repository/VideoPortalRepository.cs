@@ -17,7 +17,7 @@ namespace video_portal.Repository
         }
         public IEnumerable<Video> GetVideos()
         {
-            var data = _context.Videos.ToList();
+            var data = _context.Videos;
 
             return data;
         }
@@ -28,7 +28,7 @@ namespace video_portal.Repository
         }
         public IEnumerable<Channel> GetChannels()
         {
-            var data = _context.Channels.ToList();
+            var data = _context.Channels;
 
             return data;
         }

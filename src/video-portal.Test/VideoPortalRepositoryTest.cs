@@ -10,7 +10,9 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetVideoByIdData))]
     public void ShouldGetVideoById(VideoPortalContext context, int videoId, Video videoExpected)
     {
-        throw new NotImplementedException();
+        var repository = new VideoPortalRepository(context);
+        var result = repository.GetVideoById(videoId);
+        result.Should().BeEquivalentTo(videoExpected);
     }
     public readonly static TheoryData<VideoPortalContext, int, Video> ShouldGetVideoByIdData =
       new()
@@ -33,7 +35,12 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetVideosData))]
     public void ShouldGetVideos(VideoPortalContext context, int[] videoIdsExpected)
     {
-        throw new NotImplementedException();
+        var repository = new VideoPortalRepository(context);
+        var result = repository.GetVideos();
+        foreach (Video video in result)
+        {
+            videoIdsExpected.Should().Contain(video.VideoId);
+        }
     }
     public readonly static TheoryData<VideoPortalContext, int[]> ShouldGetVideosData =
       new()
@@ -48,7 +55,9 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetChannelByIdData))]
     public void ShouldGetChannelById(VideoPortalContext context, int channelId, Channel channelExpected)
     {
-        throw new NotImplementedException();
+        var repository = new VideoPortalRepository(context);
+        var result = repository.GetChannelById(channelId);
+        result.Should().BeEquivalentTo(channelExpected);
     }
     public readonly static TheoryData<VideoPortalContext, int, Channel> ShouldGetChannelByIdData =
       new()
@@ -65,7 +74,12 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetChannelsData))]
     public void ShouldGetChannels(VideoPortalContext context, int[] channelIdsExpected)
     {
-        throw new NotImplementedException();
+        var repository = new VideoPortalRepository(context);
+        var result = repository.GetChannels();
+        foreach (Channel channel in result)
+        {
+            channelIdsExpected.Should().Contain(channel.ChannelId);
+        }
     }
     public readonly static TheoryData<VideoPortalContext, int[]> ShouldGetChannelsData =
       new()
@@ -80,7 +94,7 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetVideosByChannelIdData))]
     public void ShouldGetVideosByChannelId(VideoPortalContext context, int channelId, int[] expectedVideosIds)
     {
-        throw new NotImplementedException();
+
     }
     public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetVideosByChannelIdData =
       new()
@@ -96,7 +110,12 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetCommentsByVideoIdData))]
     public void ShouldGetCommentsByVideoId(VideoPortalContext context, int videoId, int[] expectedCommentIds)
     {
-        throw new NotImplementedException();
+          var repository = new VideoPortalRepository(context);
+        var result = repository.GetCommentsByVideoId(videoId);
+        foreach (Comment comment in result)
+        {
+            expectedCommentIds.Should().Contain(comment.CommentId);
+        }
     }
     public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetCommentsByVideoIdData =
       new()
@@ -111,7 +130,14 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldDeleteChannelData))]
     public void ShouldDeleteChannel(VideoPortalContext context, Channel channel, int[] expectedChannels)
     {
-        throw new NotImplementedException();
+        var repository = new VideoPortalRepository(context);
+        repository.DeleteChannel(channel);
+        var result = repository.GetChannels();
+        result.Should().NotContainEquivalentOf(channel);
+        foreach (Channel channel1 in result)
+        {
+            expectedChannels.Should().Contain(channel1.ChannelId);
+        }
     }
     public readonly static TheoryData<VideoPortalContext, Channel, int[]> ShouldDeleteChannelData = new()
   {

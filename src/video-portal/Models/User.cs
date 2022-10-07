@@ -5,7 +5,7 @@ namespace video_portal.Models
         public int UserId;
         public string Username;
         public string Email;
-        public Channel Channels;
-        public Comment Comments;
+        public ICollection<Channel> Channels;
+        public ICollection<Comment> Comments;
     }
 }

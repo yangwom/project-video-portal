@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using video_portal.Repository;
 using video_portal.Models;
@@ -54,7 +55,11 @@ public class VideoPortalTest : IClassFixture<WebApplicationFactory<Program>>
     [MemberData(nameof(ShouldReturnAVideoListData))]
     public async Task ShouldReturnAVideoList(List<Video> videosExpected)
     {
-        throw new NotImplementedException();
+        var response = 
+        await client.GetAsync("/api/video");
+        var json = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<List<Video>>(json);
+        result.Should().BeEquivalentTo(videosExpected);
     }
 
     public static readonly TheoryData<List<Video>> ShouldReturnAVideoListData = new()
@@ -93,7 +98,10 @@ public class VideoPortalTest : IClassFixture<WebApplicationFactory<Program>>
     [MemberData(nameof(ShouldReturnVideosFromChannelData))]
     public async Task ShouldReturnAChannelWithVideos(Channel channelEntry, List<Video> expectedVideos)
     {
-        throw new NotImplementedException();
+        var response =  await client.GetAsync($"/api/channel/{channelEntry.ChannelId}/video");
+        var json = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<List<Video>>(json);
+        result.Should().BeEquivalentTo(expectedVideos);
     }
 
     public static readonly TheoryData<Channel, List<Video>> ShouldReturnVideosFromChannelData = new()
