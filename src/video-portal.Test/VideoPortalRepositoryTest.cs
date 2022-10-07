@@ -94,52 +94,57 @@ public class VideoPortalRepositoryTest
     [MemberData(nameof(ShouldGetVideosByChannelIdData))]
     public void ShouldGetVideosByChannelId(VideoPortalContext context, int channelId, int[] expectedVideosIds)
     {
-
-    }
-    public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetVideosByChannelIdData =
-      new()
-      {
+        var repository = new VideoPortalRepository(context);
+        var result = repository.GetVideosByChannelId(channelId);
+        foreach (Video video in result)
+        {
+            expectedVideosIds.Should().Contain(video.VideoId);
+        }
+}
+public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetVideosByChannelIdData =
+  new()
+  {
       {
         Helpers.GetContextInstanceForTests("ShouldGetVideosByChannelId"),
         3,
         new int[] { 3, 4 }
       }
-      };
+  };
 
-    [Theory]
-    [MemberData(nameof(ShouldGetCommentsByVideoIdData))]
-    public void ShouldGetCommentsByVideoId(VideoPortalContext context, int videoId, int[] expectedCommentIds)
+[Theory]
+[MemberData(nameof(ShouldGetCommentsByVideoIdData))]
+public void ShouldGetCommentsByVideoId(VideoPortalContext context, int videoId, int[] expectedCommentIds)
+{
+    var repository = new VideoPortalRepository(context);
+    var result = repository.GetCommentsByVideoId(videoId);
+    foreach (Comment comment in result)
     {
-          var repository = new VideoPortalRepository(context);
-        var result = repository.GetCommentsByVideoId(videoId);
-        foreach (Comment comment in result)
-        {
-            expectedCommentIds.Should().Contain(comment.CommentId);
-        }
+        expectedCommentIds.Should().Contain(comment.CommentId);
     }
-    public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetCommentsByVideoIdData =
-      new()
-      {
+}
+public readonly static TheoryData<VideoPortalContext, int, int[]> ShouldGetCommentsByVideoIdData =
+  new()
+  {
       {
         Helpers.GetContextInstanceForTests("ShouldGetCommentsByVideoId"),
         1,
         new int[] { 1, 2 }
       }
-      };
-    [Theory]
-    [MemberData(nameof(ShouldDeleteChannelData))]
-    public void ShouldDeleteChannel(VideoPortalContext context, Channel channel, int[] expectedChannels)
+  };
+[Theory]
+[MemberData(nameof(ShouldDeleteChannelData))]
+public void ShouldDeleteChannel(VideoPortalContext context, Channel channel, int[] expectedChannels)
+{
+    var repository = new VideoPortalRepository(context);
+    repository.DeleteChannel(channel);
+    var result = repository.GetChannels();
+    result.Should().NotContainEquivalentOf(channel);
+    foreach (Channel channel1 in result)
     {
-        var repository = new VideoPortalRepository(context);
-        repository.DeleteChannel(channel);
-        var result = repository.GetChannels();
-        result.Should().NotContainEquivalentOf(channel);
-        foreach (Channel channel1 in result)
-        {
-            expectedChannels.Should().Contain(channel1.ChannelId);
-        }
+        expectedChannels.Should().Contain(channel1.ChannelId);
     }
-    public readonly static TheoryData<VideoPortalContext, Channel, int[]> ShouldDeleteChannelData = new()
+}
+public readonly static TheoryData<VideoPortalContext, Channel, int[]> ShouldDeleteChannelData = new()
   {
     {
       Helpers.GetContextInstanceForTests("ShouldDeleteChannel"),
@@ -148,21 +153,21 @@ public class VideoPortalRepositoryTest
     }
   };
 
-    [Theory]
-    [MemberData(nameof(ShouldAddVideoToChannelData))]
-    public void ShouldAddVideoToChannel(VideoPortalContext context, Video videoToAdd, Channel channel, Video expectedVideo)
-    {
-        // Arrange
-        var repository = new VideoPortalRepository(context);
+[Theory]
+[MemberData(nameof(ShouldAddVideoToChannelData))]
+public void ShouldAddVideoToChannel(VideoPortalContext context, Video videoToAdd, Channel channel, Video expectedVideo)
+{
+    // Arrange
+    var repository = new VideoPortalRepository(context);
 
-        // Act
-        repository.AddVideoToChannel(channel, videoToAdd);
+    // Act
+    repository.AddVideoToChannel(channel, videoToAdd);
 
-        // Assert
-        var actual = context.Videos.FirstOrDefault(v => v.VideoId == videoToAdd.VideoId);
-        actual.ChannelId.Should().Be(expectedVideo.ChannelId);
-    }
-    public readonly static TheoryData<VideoPortalContext, Video, Channel, Video> ShouldAddVideoToChannelData = new()
+    // Assert
+    var actual = context.Videos.FirstOrDefault(v => v.VideoId == videoToAdd.VideoId);
+    actual.ChannelId.Should().Be(expectedVideo.ChannelId);
+}
+public readonly static TheoryData<VideoPortalContext, Video, Channel, Video> ShouldAddVideoToChannelData = new()
   {
     {
       Helpers.GetContextInstanceForTests("ShouldAddVideoToChannel"),
