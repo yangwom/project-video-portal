@@ -14,7 +14,7 @@ namespace video_portal.Models
 
         [ForeignKey("VideoId")]
 
-        public string VideoId;
+        public int VideoId;
 
     };
 }

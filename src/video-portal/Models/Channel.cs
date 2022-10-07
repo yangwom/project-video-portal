@@ -13,6 +13,6 @@ namespace video_portal.Models
     public string Url { get; set;  }
 
     public Video Videos;
-    public User Owers;
+    public ICollection<User> Owers;
 };
 }
